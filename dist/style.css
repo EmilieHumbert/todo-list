@@ -1,0 +1,65 @@
+/* ACROSS ALL SITE */
+body {
+  background-color: #f0eeee;
+}
+
+/* Header */
+.main-title {
+  font-family: 'Oswald', sans-serif;
+  text-align: center;
+  padding: 1rem;
+}
+
+
+/* HOME */
+/* each home containers */
+.square {
+  margin: 1rem;
+}
+
+/* each content/text of home containers */
+.home-content-section {
+  height: 150px;
+  cursor: pointer;
+  font-size: 1.3rem;
+  background-color: #b0c4de;
+  border: 0.0625rem solid #b4b1b1;
+  border-radius: 8px;
+}
+
+.home-content-section:hover {
+  background-color: #d6ffac;
+}
+
+/* buttons */
+.btn {
+  width: 100%;
+}
+
+/* default project */
+.defaultProject {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Add a project */
+.addProject {
+  text-align: center;
+}
+
+/* Media queries */
+@media (max-width: 499px) {
+  #content {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 500px) {
+  .addContent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
