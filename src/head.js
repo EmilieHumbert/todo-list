@@ -12,7 +12,7 @@ function head() {
 
   const linkGoogleFont = document.createElement('link');
   linkGoogleFont.setAttribute('rel', 'stylesheet');
-  linkGoogleFont.setAttribute('href', 'https://fonts.googleapis.com/css?family=Oswald&display=swap');
+  linkGoogleFont.setAttribute('href', 'https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap');
   document.head.append(linkGoogleFont);
 
   const title = document.createElement('title');

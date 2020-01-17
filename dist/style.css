@@ -1,65 +1,224 @@
 /* ACROSS ALL SITE */
 body {
-  background-color: #f0eeee;
+  background-color: #edf7f6;
+  font-family: 'Source Sans Pro', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-/* Header */
+.container {
+  padding: 2rem;
+}
+
+/* HEADER */
 .main-title {
-  font-family: 'Oswald', sans-serif;
   text-align: center;
-  padding: 1rem;
+  margin: 0 0 2rem;
 }
 
 
 /* HOME */
-/* each home containers */
+/* Each home containers (default, new project, new todo */
 .square {
   margin: 1rem;
 }
 
-/* each content/text of home containers */
+/* Each content/text of home containers */
 .home-content-section {
-  height: 150px;
+  background-color: #e6f1f7;
+  border: 0.0625rem solid #0f4c81;
+  border-radius: 0.5rem;
   cursor: pointer;
   font-size: 1.3rem;
-  background-color: #b0c4de;
-  border: 0.0625rem solid #b4b1b1;
-  border-radius: 8px;
+  height: 9.375rem;
+  text-transform: uppercase;
 }
 
 .home-content-section:hover {
-  background-color: #d6ffac;
+  background-color: #c0deea;
 }
 
-/* buttons */
-.btn {
+/* Btn */
+.select-btn {
+  cursor: pointer;
+  font-family: 'Source Sans Pro', sans-serif;
   width: 100%;
 }
 
-/* default project */
-.defaultProject {
+.back-btn {
+  height: 3.125rem;
+  width: 3.125rem;
+}
+
+.back-and-delete-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.back-btn-section {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.delete-project-btn-section {
+  grid-column: 2;
+  grid-row: 1;
+  place-self: end;
+}
+
+
+/* Default project */
+.projects-list-item {
+  align-items: center;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 /* Add a project */
-.addProject {
+.add-project {
   text-align: center;
 }
 
 /* Media queries */
 @media (max-width: 499px) {
-  #content {
+  .main-content {
     display: grid;
     grid-template-columns: 1fr;
-  }
+  }  
 }
 
 @media (min-width: 500px) {
-  .addContent {
+  .add-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
 }
 
+
+/* PROJECT PAGE*/
+.title {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  text-transform: uppercase;
+}
+
+.input {
+  background-color: #e6f1f7;
+  border: 0.0625rem solid #0f4c81;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  font-family: 'Source Sans Pro', sans-serif;
+  padding: 0.8rem 0.5rem;
+  width: 100%;
+}
+
+.title-input {
+  font-size: 1.125rem;
+  height: 2.5rem;
+}
+
+.description-input {
+  font-size: 1.1rem;
+  height: 5rem;
+}
+
+/* Btn */
+.btn {
+  border: 0.0625rem solid #0f4c81;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  height: 50px;
+  margin-top: 1rem;
+  padding: 0.625rem;
+  width: auto;
+}
+
+.delete-btn {
+  background-color: #fdecec;
+}
+
+.delete-btn:hover {
+  background-color: #f5d5d5;
+}
+
+.save-project-btn-section {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.save-btn {
+  background-color: #e5fff5;
+  grid-column: end;
+}
+
+.save-btn:hover {
+  background-color: #D6F9DD;
+}
+
+/* Todo list on project page*/
+.project-items-section,
+.project-todo-list-section {
+  background-color: #dceef8;
+  border: 0.0625rem solid #0f4c81;
+  border-radius: 0.5rem;
+  margin-top: 2rem;
+  padding: 2rem;
+}
+
+.li {
+  background-color: #e6f1f7;
+  border: 0.0625rem solid #0f4c81;
+  cursor: pointer;
+  font-size: 1.1rem;
+  list-style-type: none;
+  padding: 1rem;
+  margin: 0.725rem 0;
+}
+
+.li:hover {
+  font-weight: bold;
+}
+
+.todo-list {
+  padding: 0;
+  margin: 0;
+}
+
+/* checkbox */
+.add-new-item {
+  background-color: #e5fff5;
+  font-size: 1.3rem;
+  font-weight: bold;
+  height: auto;
+  margin-top: 1rem;
+  width: auto;
+}
+
+.add-new-item:hover {
+  background-color: #D6F9DD;
+  cursor: pointer;
+}
+
+input[type=checkbox]:checked + span {
+  text-decoration: line-through;
+}
+
+/* TODO PAGE */
+.project-select,
+.deadline-date-input,
+.drop-btn {
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.drop-btn {
+  background-color: #e6f1f7;
+  border: 0.0625rem solid #0f4c81;
+  font-size: 1.1rem;
+  padding: 1rem;
+}
+
+/* Completed ? section */
+.complete-title {
+  font-size: 1.1rem;
+}
