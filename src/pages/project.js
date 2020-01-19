@@ -1,6 +1,7 @@
 import navigation from '../navigation';
 import { upsertProject, deleteProject, canDeleteProject } from '../projects';
 import Project from '../factories/project';
+import { getTodoIndex, deleteTodo } from '../todos';
 
 
 function getFieldValue(elementId) {
@@ -151,6 +152,7 @@ function projectPage(project = new Project()) {
       todoItem.append(todoItemCheckbox);
 
       const todoItemSpan = document.createElement('span');
+      todoItemSpan.setAttribute('class', 'todo-item-span')
       todoItemSpan.addEventListener('click', (event) => {
         if (event) event.preventDefault();
 
@@ -160,6 +162,15 @@ function projectPage(project = new Project()) {
       });
       todoItemSpan.innerHTML = todo.title;
       todoItem.append(todoItemSpan);
+
+      const todoItemDeleteBtn = document.createElement('button');
+      todoItemDeleteBtn.setAttribute('class', 'btn delete-btn todo-item-delete-btn');
+      todoItemDeleteBtn.innerHTML = 'DELETE';
+      todoItemDeleteBtn.addEventListener('click', () => {
+        deleteTodo(todo);
+      });
+      
+      todoItem.append(todoItemDeleteBtn)
 
       todoList.append(todoItem);
     });

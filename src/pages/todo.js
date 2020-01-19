@@ -4,15 +4,9 @@ import Project from '../factories/project';
 import Todo from '../factories/todo';
 import { getProjects } from '../projects';
 
-function isCheckbox (field) {
-  return field.getAttribute('type') === 'checkbox';
-}
 
 function getFieldValue (elementId) {
   const field = document.getElementById(elementId);
-  if (isCheckbox(field)) {
-    return field.checked;
-  }
   return field.value;
 }
 
@@ -30,7 +24,7 @@ function todoPage({ project, todo = new Todo() } = {}) {
     const description = getFieldValue('todo-description-input');
     const date = getFieldValue('deadline-date-input');
     const priority = getFieldValue('todo-priority-select');
-    const complete = getFieldValue('complete-checkbox');
+    const complete = getFieldValue('complete-select') === 'yes';
 
     if (!project) {
       const projectIndex = getFieldValue('project-select');
@@ -82,9 +76,8 @@ function todoPage({ project, todo = new Todo() } = {}) {
     pickProjectSection.append(pickProjectTitle);
 
     const projectSelect = document.createElement('select');
-    projectSelect.setAttribute('class', 'drop-btn');
     projectSelect.setAttribute('id', 'project-select');
-    projectSelect.setAttribute('class', 'project-select');
+    projectSelect.setAttribute('class', 'drop-btn project-select');
     projects.forEach((project, index) => {
       const projectOption = document.createElement('option');
       projectOption.setAttribute('value', index);
@@ -135,10 +128,16 @@ function todoPage({ project, todo = new Todo() } = {}) {
   todoDescriptionSection.append(todoDescriptionInput);
 
  
+  // Container for todo's details
+  const todoDetailSection = document.createElement('div');
+  todoDetailSection.setAttribute('class', 'todo-detail-section');
+  todoContainer.append(todoDetailSection);
+
+
   // Todo due date
   const deadlineDateSection = document.createElement('div');
   deadlineDateSection.setAttribute('class', 'deadline-date-section');
-  todoContainer.append(deadlineDateSection);
+  todoDetailSection.append(deadlineDateSection);
 
   const deadlineDateTitle = document.createElement('h3');
   deadlineDateTitle.setAttribute('class', 'title deadline-date-title');
@@ -147,7 +146,7 @@ function todoPage({ project, todo = new Todo() } = {}) {
 
   const deadlineDateInput = document.createElement('input');
   deadlineDateInput.setAttribute('id', 'deadline-date-input');
-  deadlineDateInput.setAttribute('class', 'deadline-date-input');
+  deadlineDateInput.setAttribute('class', 'drop-btn deadline-date-input');
   deadlineDateInput.setAttribute('type', 'date');
   if (todo.date) {
     deadlineDateInput.setAttribute('value', todo.date);
@@ -158,7 +157,7 @@ function todoPage({ project, todo = new Todo() } = {}) {
   // Todo priority
   const prioritySection = document.createElement('div');
   prioritySection.setAttribute('class', 'priority-section');
-  todoContainer.append(prioritySection);
+  todoDetailSection.append(prioritySection);
 
   const priorityTitle = document.createElement('h3');
   priorityTitle.setAttribute('class', 'title priority-title');
@@ -169,7 +168,7 @@ function todoPage({ project, todo = new Todo() } = {}) {
   const selectedPriority = todo.priority || 'medium';
   const prioritySelect = document.createElement('select');
   prioritySelect.setAttribute('id', 'todo-priority-select');
-  prioritySelect.setAttribute('class', 'drop-btn');
+  prioritySelect.setAttribute('class', 'drop-btn todo-priority-select');
   [
     'High',
     'Medium',
@@ -187,9 +186,40 @@ function todoPage({ project, todo = new Todo() } = {}) {
 
 
   // Todo completed?
+  // const completeSection = document.createElement('div');
+  // completeSection.setAttribute('id', 'complete-section');
+  // todoDetailSection.append(completeSection);
+
+  // const completeTitle = document.createElement('h3');
+  // completeTitle.setAttribute('id', 'complete-title');
+  // completeTitle.setAttribute('class', 'title complete-title');
+  // completeTitle.innerHTML = 'COMPLETED?';
+  // completeSection.append(completeTitle);
+
+  // const completeLabel = document.createElement('label');
+  // completeLabel.setAttribute('class', 'complete-label');
+  // completeSection.append(completeLabel);
+
+  // const completeCheckbox = document.createElement('input');
+  // completeCheckbox.setAttribute('id', 'complete-checkbox')
+  // completeCheckbox.type = 'checkbox';
+  // completeCheckbox.name = 'checkbox';
+  // if (todo.complete) {
+  //   completeCheckbox.checked = todo.complete;
+  //   deleteTodo(todo);
+  // }
+  // completeLabel.append(completeCheckbox);
+
+  // const completeSpan = document.createElement('span');
+  // completeSpan.innerHTML = 'YES';
+  // completeLabel.append(completeSpan);
+
+// 
+
+
   const completeSection = document.createElement('div');
   completeSection.setAttribute('id', 'complete-section');
-  todoContainer.append(completeSection);
+  todoDetailSection.append(completeSection);
 
   const completeTitle = document.createElement('h3');
   completeTitle.setAttribute('id', 'complete-title');
@@ -197,32 +227,33 @@ function todoPage({ project, todo = new Todo() } = {}) {
   completeTitle.innerHTML = 'COMPLETED?';
   completeSection.append(completeTitle);
 
-  const completeLabel = document.createElement('label');
-  completeLabel.setAttribute('class', 'complete-label');
-  completeSection.append(completeLabel);
-
-  const completeCheckbox = document.createElement('input');
-  completeCheckbox.setAttribute('id', 'complete-checkbox')
-  completeCheckbox.type = 'checkbox';
-  completeCheckbox.name = 'checkbox';
-  if (todo.complete) {
-    completeCheckbox.checked = todo.complete;
-    deleteTodo(todo);
-  }
-  completeLabel.append(completeCheckbox);
-
-  const completeSpan = document.createElement('span');
-  completeSpan.innerHTML = 'YES';
-  completeLabel.append(completeSpan);
+  const selectedComplete = todo.complete || 'no';
+  const completeSelect = document.createElement('select');
+  completeSelect.setAttribute('id', 'complete-select')
+  completeSelect.setAttribute('class', 'drop-btn complete-label');
+  [
+    'Yes',
+    'No'
+  ].forEach((complete) => {
+    const completeOption = document.createElement('option');
+    completeOption.setAttribute('value', complete.toLowerCase());
+    completeOption.innerHTML = complete;
+    if (complete.toLowerCase() === selectedComplete) {
+      completeOption.setAttribute('selected', '');
+    }
+    completeSelect.appendChild(completeOption);
+  });
+  completeSection.append(completeSelect);
 
 
   // Save button
   const saveTodoBtnSection = document.createElement('div');
   saveTodoBtnSection.setAttribute('class', 'save-todo-btn-section');
-  todoContainer.append(saveTodoBtnSection);
+  todoDetailSection.append(saveTodoBtnSection);
 
   const saveTodoBtn = document.createElement('button');
   saveTodoBtn.setAttribute('id', 'save-btn');
+  saveTodoBtn.setAttribute('class', 'todo-save-btn');
   saveTodoBtn.setAttribute('type', 'submit');
   saveTodoBtn.innerHTML = 'SAVE';
   saveTodoBtnSection.append(saveTodoBtn);

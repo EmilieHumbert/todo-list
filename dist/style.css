@@ -27,7 +27,6 @@ body {
 .home-content-section {
   background-color: #e6f1f7;
   border: 0.0625rem solid #0f4c81;
-  border-radius: 0.5rem;
   cursor: pointer;
   font-size: 1.3rem;
   height: 9.375rem;
@@ -105,7 +104,6 @@ body {
 .input {
   background-color: #e6f1f7;
   border: 0.0625rem solid #0f4c81;
-  border-radius: 0.5rem;
   box-sizing: border-box;
   font-family: 'Source Sans Pro', sans-serif;
   padding: 0.8rem 0.5rem;
@@ -125,7 +123,6 @@ body {
 /* Btn */
 .btn {
   border: 0.0625rem solid #0f4c81;
-  border-radius: 0.5rem;
   cursor: pointer;
   height: 50px;
   margin-top: 1rem;
@@ -160,12 +157,13 @@ body {
 .project-todo-list-section {
   background-color: #dceef8;
   border: 0.0625rem solid #0f4c81;
-  border-radius: 0.5rem;
   margin-top: 2rem;
   padding: 2rem;
 }
 
 .li {
+  display: grid;
+  grid-template-columns: 1fr 5fr 1fr;
   background-color: #e6f1f7;
   border: 0.0625rem solid #0f4c81;
   cursor: pointer;
@@ -178,6 +176,23 @@ body {
 .li:hover {
   font-weight: bold;
 }
+
+.todo-item-checkbox {
+  grid-column: 1;
+  place-self: center;
+}
+
+.todo-item-span {
+  grid-column: 2;
+  place-self: center;
+}
+
+.todo-item-delete-btn {
+  grid-column: 3;
+  place-self: center;
+  margin: 0;
+}
+
 
 .todo-list {
   padding: 0;
@@ -205,20 +220,72 @@ input[type=checkbox]:checked + span {
 
 /* TODO PAGE */
 .project-select,
-.deadline-date-input,
-.drop-btn {
+.deadline-date-input {
   cursor: pointer;
   font-size: 1.1rem;
+}
+
+.deadline-date-input {
+  width: 14rem;
 }
 
 .drop-btn {
   background-color: #e6f1f7;
   border: 0.0625rem solid #0f4c81;
+  cursor: pointer;
+  font-family: 'Source Sans Pro', sans-serif;
   font-size: 1.1rem;
   padding: 1rem;
 }
 
+.project-select,
+.todo-priority-select {
+  width: 15rem;
+}
+
+
 /* Completed ? section */
 .complete-title {
   font-size: 1.1rem;
+}
+
+.todo-save-btn {
+  background-color: #e5fff5;
+  border: 0.0625rem solid #0f4c81;
+  cursor: pointer;
+  height: 50px;
+  margin-top: 1rem;
+  padding: 0.625rem;
+  width: auto;
+}
+
+.todo-save-btn:hover {
+  background-color: #D6F9DD;
+}
+
+.todo-detail-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.deadline-date-section {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.priority-section {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.complete-section {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.save-todo-btn-section {
+  grid-column: 3;
+  grid-row: 2;
+  place-self: center end;
 }

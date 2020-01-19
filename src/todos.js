@@ -14,7 +14,7 @@ function getTodoIndex(todo) {
   return project.todos.indexOf(todo);
 }
 
-function deleteTodo(project, todo) {
+function deleteTodo(todo) {
   project.todos.splice(getTodoIndex(todo), 1);
 }
 
