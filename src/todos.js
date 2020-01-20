@@ -25,6 +25,7 @@ function canDeleteTodo(project, todo) {
 function deleteTodo(project, todo) {
   if (canDeleteTodo(project, todo)) {
     project.todos.splice(getTodoIndex(project, todo), 1);
+    updateLocalStorage();
   }
 }
 

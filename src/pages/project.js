@@ -155,8 +155,6 @@ function projectPage(project = new Project()) {
       const todoItemSpan = document.createElement('span');
       todoItemSpan.setAttribute('class', 'todo-item-span')
       todoItemSpan.addEventListener('click', (event) => {
-        if (event) event.preventDefault();
-
         navigation('todo', { project, todo });
 
         return false;

@@ -27,6 +27,7 @@ function canDeleteProject(project) {
 function deleteProject(project) {
   if (canDeleteProject(project)) {
     projects.splice(getProjectIndex(project), 1);
+    updateLocalStorage();
   }
 }
 

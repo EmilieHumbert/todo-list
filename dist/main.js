@@ -501,8 +501,6 @@ function projectPage(project = new _factories_project__WEBPACK_IMPORTED_MODULE_2
       const todoItemSpan = document.createElement('span');
       todoItemSpan.setAttribute('class', 'todo-item-span')
       todoItemSpan.addEventListener('click', (event) => {
-        if (event) event.preventDefault();
-
         Object(_navigation__WEBPACK_IMPORTED_MODULE_0__["default"])('todo', { project, todo });
 
         return false;
@@ -611,8 +609,6 @@ function todoPage({ project, todo = new _factories_todo__WEBPACK_IMPORTED_MODULE
   backBtn.setAttribute('alt', 'back button');
   backBtn.src = 'images/back-button.svg';
   backBtn.addEventListener('click', (event) => {
-    if (event) event.preventDefault();
-
     if (project) {
       Object(_navigation__WEBPACK_IMPORTED_MODULE_0__["default"])('project', project);
     } else {
@@ -635,7 +631,7 @@ function todoPage({ project, todo = new _factories_todo__WEBPACK_IMPORTED_MODULE
   deleteTodoBtn.setAttribute('class', 'btn delete-btn');
   deleteTodoBtn.innerHTML = 'DELETE';
   if (project && Object(_todos__WEBPACK_IMPORTED_MODULE_1__["canDeleteTodo"])(project, todo)) {
-    deleteTodoBtn.addEventListener('click', () => {
+    deleteTodoBtn.addEventListener('click', (event) => {
       Object(_todos__WEBPACK_IMPORTED_MODULE_1__["deleteTodo"])(project, todo);
       Object(_navigation__WEBPACK_IMPORTED_MODULE_0__["default"])('project', project);
     });
@@ -861,6 +857,7 @@ function canDeleteProject(project) {
 function deleteProject(project) {
   if (canDeleteProject(project)) {
     _store__WEBPACK_IMPORTED_MODULE_0__["projects"].splice(getProjectIndex(project), 1);
+    Object(_store__WEBPACK_IMPORTED_MODULE_0__["updateLocalStorage"])();
   }
 }
 
@@ -994,6 +991,7 @@ function canDeleteTodo(project, todo) {
 function deleteTodo(project, todo) {
   if (canDeleteTodo(project, todo)) {
     project.todos.splice(getTodoIndex(project, todo), 1);
+    Object(_store__WEBPACK_IMPORTED_MODULE_0__["updateLocalStorage"])();
   }
 }
 

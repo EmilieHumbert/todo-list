@@ -55,8 +55,6 @@ function todoPage({ project, todo = new Todo() } = {}) {
   backBtn.setAttribute('alt', 'back button');
   backBtn.src = 'images/back-button.svg';
   backBtn.addEventListener('click', (event) => {
-    if (event) event.preventDefault();
-
     if (project) {
       navigation('project', project);
     } else {
@@ -79,7 +77,7 @@ function todoPage({ project, todo = new Todo() } = {}) {
   deleteTodoBtn.setAttribute('class', 'btn delete-btn');
   deleteTodoBtn.innerHTML = 'DELETE';
   if (project && canDeleteTodo(project, todo)) {
-    deleteTodoBtn.addEventListener('click', () => {
+    deleteTodoBtn.addEventListener('click', (event) => {
       deleteTodo(project, todo);
       navigation('project', project);
     });
