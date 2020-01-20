@@ -1,7 +1,7 @@
 import navigation from '../navigation';
 import { upsertProject, deleteProject, canDeleteProject } from '../projects';
 import Project from '../factories/project';
-import { getTodoIndex, deleteTodo } from '../todos';
+import { deleteTodo } from '../todos';
 
 
 function getFieldValue(elementId) {

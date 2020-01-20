@@ -552,10 +552,8 @@ function projectPage(project = new _factories_project__WEBPACK_IMPORTED_MODULE_2
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _navigation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../navigation */ "./src/navigation.js");
 /* harmony import */ var _todos__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../todos */ "./src/todos.js");
-/* harmony import */ var _factories_project__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../factories/project */ "./src/factories/project.js");
-/* harmony import */ var _factories_todo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../factories/todo */ "./src/factories/todo.js");
-/* harmony import */ var _projects__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../projects */ "./src/projects.js");
-
+/* harmony import */ var _factories_todo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../factories/todo */ "./src/factories/todo.js");
+/* harmony import */ var _projects__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../projects */ "./src/projects.js");
 
 
 
@@ -568,8 +566,8 @@ function getFieldValue (elementId) {
   return field.value;
 }
 
-function todoPage({ project, todo = new _factories_todo__WEBPACK_IMPORTED_MODULE_3__["default"]() } = {}) {
-  const projects = Object(_projects__WEBPACK_IMPORTED_MODULE_4__["getProjects"])();
+function todoPage({ project, todo = new _factories_todo__WEBPACK_IMPORTED_MODULE_2__["default"]() } = {}) {
+  const projects = Object(_projects__WEBPACK_IMPORTED_MODULE_3__["getProjects"])();
 
   // Main container
   const todoContainer = document.createElement('form');
@@ -833,34 +831,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getProjects", function() { return getProjects; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "canDeleteProject", function() { return canDeleteProject; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteProject", function() { return deleteProject; });
-/* harmony import */ var _factories_project__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./factories/project */ "./src/factories/project.js");
-/* harmony import */ var _factories_todo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./factories/todo */ "./src/factories/todo.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/store.js");
 
-
-
-// Projects stored in memory
-const projects = [
-  // Create a default project
-  new _factories_project__WEBPACK_IMPORTED_MODULE_0__["default"]('Default', 'Hello World!', [
-    new _factories_todo__WEBPACK_IMPORTED_MODULE_1__["default"]('Go shopping', 'Shopping list', '2020-01-20', 'high'),
-    new _factories_todo__WEBPACK_IMPORTED_MODULE_1__["default"]('Another thing', 'Not so important', '2020-01-21', 'low')
-  ])
-];
-
-function getProjects() {
-  return projects;
-}
 
 function getProjectIndex(project) {
-  return projects.indexOf(project);
+  return _store__WEBPACK_IMPORTED_MODULE_0__["projects"].indexOf(project);
 }
 
+// Update projects
 function upsertProject(project, data) {
   project.update(data);
 
   if (getProjectIndex(project) === -1) {
-    projects.push(project);
+    _store__WEBPACK_IMPORTED_MODULE_0__["projects"].push(project);
   }
+
+  Object(_store__WEBPACK_IMPORTED_MODULE_0__["updateLocalStorage"])();
+}
+
+function getProjects() {
+  return _store__WEBPACK_IMPORTED_MODULE_0__["projects"];
 }
 
 // If projects index is 0 (default) or project not save yet (-1) then project can't be deleted
@@ -870,7 +860,91 @@ function canDeleteProject(project) {
 
 function deleteProject(project) {
   if (canDeleteProject(project)) {
-    projects.splice(getProjectIndex(project), 1);
+    _store__WEBPACK_IMPORTED_MODULE_0__["projects"].splice(getProjectIndex(project), 1);
+  }
+}
+
+
+
+
+/***/ }),
+
+/***/ "./src/store.js":
+/*!**********************!*\
+  !*** ./src/store.js ***!
+  \**********************/
+/*! exports provided: projects, updateLocalStorage */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "projects", function() { return projects; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateLocalStorage", function() { return updateLocalStorage; });
+/* harmony import */ var _factories_project__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./factories/project */ "./src/factories/project.js");
+/* harmony import */ var _factories_todo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./factories/todo */ "./src/factories/todo.js");
+
+
+
+// Projects stored in memory
+const projects = [];
+
+// Check local storage
+function storageAvailable(type) {
+  let storage;
+  try {
+    const x = '__storage_test__';
+    storage = window[type];
+    storage.setItem(x, x);
+    storage.removeItem(x);
+    return true;
+  } catch(e) {
+    return e instanceof DOMException && (
+      // everything except Firefox
+      e.code === 22 ||
+      // Firefox
+      e.code === 1014 ||
+      // test name field too, because code might not be present
+      // everything except Firefox
+      e.name === 'QuotaExceededError' ||
+      // Firefox
+      e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+      // acknowledge QuotaExceededError only if there's something already stored
+      (storage && storage.length !== 0);
+  }
+}
+
+// Local storage
+if (storageAvailable('localStorage')) {
+  const storedProjects = JSON.parse(window.localStorage.getItem('myprojects'));
+
+  if (Array.isArray(storedProjects) && storedProjects.length > 0) {
+    storedProjects.forEach((storedProject) => {
+      const todos = storedProject.todos.map((storedTodo) => new _factories_todo__WEBPACK_IMPORTED_MODULE_1__["default"](
+        storedTodo.title,
+        storedTodo.description,
+        storedTodo.date,
+        storedTodo.priority,
+        storedTodo.complete
+      ));
+      const project = new _factories_project__WEBPACK_IMPORTED_MODULE_0__["default"](storedProject.title, storedProject.description, todos);
+      projects.push(project);
+    });
+  }
+}
+
+// Create default project
+if (projects.length < 1) {
+  const defaultProject = new _factories_project__WEBPACK_IMPORTED_MODULE_0__["default"]('Default', 'Hello World!', [
+    new _factories_todo__WEBPACK_IMPORTED_MODULE_1__["default"]('Go shopping', 'Shopping list', '2020-01-20', 'high'),
+    new _factories_todo__WEBPACK_IMPORTED_MODULE_1__["default"]('Another thing', 'Not so important', '2020-01-21', 'low')
+  ]);
+  projects.push(defaultProject);
+}
+
+// Save projects to local storage
+function updateLocalStorage() {
+  if (storageAvailable('localStorage')) {
+    window.localStorage.setItem('myprojects', JSON.stringify(projects));
   }
 }
 
@@ -892,6 +966,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTodos", function() { return getTodos; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "canDeleteTodo", function() { return canDeleteTodo; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteTodo", function() { return deleteTodo; });
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/store.js");
+
+
 function getTodos() {
   return todos;
 }
@@ -902,6 +979,8 @@ function upsertTodo(project, todo, data) {
   if (project.todos.indexOf(todo) === -1) {
     project.todos.push(todo);
   }
+
+  Object(_store__WEBPACK_IMPORTED_MODULE_0__["updateLocalStorage"])();
 }
 
 function getTodoIndex(project, todo) {
@@ -917,6 +996,7 @@ function deleteTodo(project, todo) {
     project.todos.splice(getTodoIndex(project, todo), 1);
   }
 }
+
 
 
 

@@ -1,29 +1,22 @@
-import Project from './factories/project';
-import Todo from './factories/todo';
-
-// Projects stored in memory
-const projects = [
-  // Create a default project
-  new Project('Default', 'Hello World!', [
-    new Todo('Go shopping', 'Shopping list', '2020-01-20', 'high'),
-    new Todo('Another thing', 'Not so important', '2020-01-21', 'low')
-  ])
-];
-
-function getProjects() {
-  return projects;
-}
+import { projects, updateLocalStorage } from './store';
 
 function getProjectIndex(project) {
   return projects.indexOf(project);
 }
 
+// Update projects
 function upsertProject(project, data) {
   project.update(data);
 
   if (getProjectIndex(project) === -1) {
     projects.push(project);
   }
+
+  updateLocalStorage();
+}
+
+function getProjects() {
+  return projects;
 }
 
 // If projects index is 0 (default) or project not save yet (-1) then project can't be deleted

@@ -1,6 +1,5 @@
 import navigation from '../navigation';
 import { upsertTodo, deleteTodo, canDeleteTodo } from '../todos';
-import Project from '../factories/project';
 import Todo from '../factories/todo';
 import { getProjects } from '../projects';
 

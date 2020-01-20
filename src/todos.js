@@ -1,3 +1,5 @@
+import { updateLocalStorage } from './store';
+
 function getTodos() {
   return todos;
 }
@@ -8,6 +10,8 @@ function upsertTodo(project, todo, data) {
   if (project.todos.indexOf(todo) === -1) {
     project.todos.push(todo);
   }
+
+  updateLocalStorage();
 }
 
 function getTodoIndex(project, todo) {
@@ -23,6 +27,7 @@ function deleteTodo(project, todo) {
     project.todos.splice(getTodoIndex(project, todo), 1);
   }
 }
+
 export {
   upsertTodo,
   getTodos,
