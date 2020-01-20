@@ -67,6 +67,10 @@ body {
   place-self: end;
 }
 
+.add-item-button,
+.add-project-button {
+  background-color: #e5fff5
+}
 
 /* Default project */
 .projects-list-item {
@@ -138,6 +142,7 @@ body {
 
 .delete-btn:hover {
   background-color: #f5d5d5;
+  font-weight: bold;
 }
 
 .save-project-btn-section {
@@ -152,6 +157,7 @@ body {
 
 .save-btn:hover {
   background-color: #D6F9DD;
+  font-weight: bold;
 }
 
 /* Todo list on project page*/
@@ -215,11 +221,14 @@ body {
 
 /* checkbox */
 .add-new-item {
+  align-items: center;
   background-color: #e5fff5;
+  display: flex;
   font-size: 1.3rem;
-  font-weight: bold;
   height: auto;
+  justify-content: center;
   margin-top: 1rem;
+  text-transform: uppercase;
   width: auto;
 }
 
@@ -275,6 +284,7 @@ input[type=checkbox]:checked + span {
 
 .todo-save-btn:hover {
   background-color: #D6F9DD;
+  font-weight: bold;
 }
 
 .todo-detail-section {
