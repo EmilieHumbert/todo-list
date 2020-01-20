@@ -1,8 +1,9 @@
 import navigation from '../navigation';
-import { upsertTodo, deleteTodo } from '../todos';
+import { upsertTodo, deleteTodo, canDeleteTodo } from '../todos';
 import Project from '../factories/project';
 import Todo from '../factories/todo';
 import { getProjects } from '../projects';
+
 
 
 function getFieldValue (elementId) {
@@ -38,10 +39,16 @@ function todoPage({ project, todo = new Todo() } = {}) {
   });
 
 
+  // Container for back and delete btn
+  const backAndDeleteBtnSection = document.createElement('div');
+  backAndDeleteBtnSection.setAttribute('class', 'back-and-delete-section');
+  todoContainer.append(backAndDeleteBtnSection);
+
+
   // Back to project btn
   const backBtnSection = document.createElement('div');
-  backBtnSection.setAttribute('class', 'back-btn-section');
-  todoContainer.append(backBtnSection);
+  backBtnSection.setAttribute('class', 'back-todo-btn-section');
+  backAndDeleteBtnSection.append(backBtnSection);
 
   const backBtn = document.createElement('img');
   backBtn.setAttribute('id', 'back-btn');
@@ -61,6 +68,26 @@ function todoPage({ project, todo = new Todo() } = {}) {
   });
 
   backBtnSection.append(backBtn);
+
+
+  // Delete btn
+  const deleteTodoBtnSection = document.createElement('div');
+  deleteTodoBtnSection.setAttribute('class', 'delete-todo-btn-section');
+  backAndDeleteBtnSection.append(deleteTodoBtnSection);
+
+  const deleteTodoBtn = document.createElement('button');
+  deleteTodoBtn.setAttribute('id', 'delete-todo-btn');
+  deleteTodoBtn.setAttribute('class', 'btn delete-btn');
+  deleteTodoBtn.innerHTML = 'DELETE';
+  if (project && canDeleteTodo(project, todo)) {
+    deleteTodoBtn.addEventListener('click', () => {
+      deleteTodo(project, todo);
+      navigation('project', project);
+    });
+  } else {
+    deleteTodoBtn.setAttribute('disabled', true);
+  };
+  deleteTodoBtnSection.append(deleteTodoBtn);
 
 
   // Pick the project
@@ -185,38 +212,7 @@ function todoPage({ project, todo = new Todo() } = {}) {
   prioritySection.append(prioritySelect);
 
 
-  // Todo completed?
-  // const completeSection = document.createElement('div');
-  // completeSection.setAttribute('id', 'complete-section');
-  // todoDetailSection.append(completeSection);
-
-  // const completeTitle = document.createElement('h3');
-  // completeTitle.setAttribute('id', 'complete-title');
-  // completeTitle.setAttribute('class', 'title complete-title');
-  // completeTitle.innerHTML = 'COMPLETED?';
-  // completeSection.append(completeTitle);
-
-  // const completeLabel = document.createElement('label');
-  // completeLabel.setAttribute('class', 'complete-label');
-  // completeSection.append(completeLabel);
-
-  // const completeCheckbox = document.createElement('input');
-  // completeCheckbox.setAttribute('id', 'complete-checkbox')
-  // completeCheckbox.type = 'checkbox';
-  // completeCheckbox.name = 'checkbox';
-  // if (todo.complete) {
-  //   completeCheckbox.checked = todo.complete;
-  //   deleteTodo(todo);
-  // }
-  // completeLabel.append(completeCheckbox);
-
-  // const completeSpan = document.createElement('span');
-  // completeSpan.innerHTML = 'YES';
-  // completeLabel.append(completeSpan);
-
-// 
-
-
+  // Completed?
   const completeSection = document.createElement('div');
   completeSection.setAttribute('id', 'complete-section');
   todoDetailSection.append(completeSection);

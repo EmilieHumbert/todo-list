@@ -377,6 +377,7 @@ function projectPage(project = new _factories_project__WEBPACK_IMPORTED_MODULE_2
   backAndDeleteBtnSection.setAttribute('class', 'back-and-delete-section');
   projectContainer.append(backAndDeleteBtnSection);
 
+
   // Back to home btn
   const backBtnSection = document.createElement('div');
   backBtnSection.setAttribute('class', 'back-btn-section');
@@ -407,7 +408,7 @@ function projectPage(project = new _factories_project__WEBPACK_IMPORTED_MODULE_2
     });
   } else {
     deleteProjectBtn.setAttribute('disabled', true);
-  }
+  };
   deleteProjectBtnSection.append(deleteProjectBtn);
 
   // container for project items (project title and description)
@@ -513,7 +514,8 @@ function projectPage(project = new _factories_project__WEBPACK_IMPORTED_MODULE_2
       todoItemDeleteBtn.setAttribute('class', 'btn delete-btn todo-item-delete-btn');
       todoItemDeleteBtn.innerHTML = 'DELETE';
       todoItemDeleteBtn.addEventListener('click', () => {
-        Object(_todos__WEBPACK_IMPORTED_MODULE_3__["deleteTodo"])(todo);
+        Object(_todos__WEBPACK_IMPORTED_MODULE_3__["deleteTodo"])(project, todo);
+        Object(_navigation__WEBPACK_IMPORTED_MODULE_0__["default"])('project', project);
       });
       
       todoItem.append(todoItemDeleteBtn)
@@ -560,6 +562,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 function getFieldValue (elementId) {
   const field = document.getElementById(elementId);
   return field.value;
@@ -593,10 +596,16 @@ function todoPage({ project, todo = new _factories_todo__WEBPACK_IMPORTED_MODULE
   });
 
 
+  // Container for back and delete btn
+  const backAndDeleteBtnSection = document.createElement('div');
+  backAndDeleteBtnSection.setAttribute('class', 'back-and-delete-section');
+  todoContainer.append(backAndDeleteBtnSection);
+
+
   // Back to project btn
   const backBtnSection = document.createElement('div');
-  backBtnSection.setAttribute('class', 'back-btn-section');
-  todoContainer.append(backBtnSection);
+  backBtnSection.setAttribute('class', 'back-todo-btn-section');
+  backAndDeleteBtnSection.append(backBtnSection);
 
   const backBtn = document.createElement('img');
   backBtn.setAttribute('id', 'back-btn');
@@ -616,6 +625,26 @@ function todoPage({ project, todo = new _factories_todo__WEBPACK_IMPORTED_MODULE
   });
 
   backBtnSection.append(backBtn);
+
+
+  // Delete btn
+  const deleteTodoBtnSection = document.createElement('div');
+  deleteTodoBtnSection.setAttribute('class', 'delete-todo-btn-section');
+  backAndDeleteBtnSection.append(deleteTodoBtnSection);
+
+  const deleteTodoBtn = document.createElement('button');
+  deleteTodoBtn.setAttribute('id', 'delete-todo-btn');
+  deleteTodoBtn.setAttribute('class', 'btn delete-btn');
+  deleteTodoBtn.innerHTML = 'DELETE';
+  if (project && Object(_todos__WEBPACK_IMPORTED_MODULE_1__["canDeleteTodo"])(project, todo)) {
+    deleteTodoBtn.addEventListener('click', () => {
+      Object(_todos__WEBPACK_IMPORTED_MODULE_1__["deleteTodo"])(project, todo);
+      Object(_navigation__WEBPACK_IMPORTED_MODULE_0__["default"])('project', project);
+    });
+  } else {
+    deleteTodoBtn.setAttribute('disabled', true);
+  };
+  deleteTodoBtnSection.append(deleteTodoBtn);
 
 
   // Pick the project
@@ -740,38 +769,7 @@ function todoPage({ project, todo = new _factories_todo__WEBPACK_IMPORTED_MODULE
   prioritySection.append(prioritySelect);
 
 
-  // Todo completed?
-  // const completeSection = document.createElement('div');
-  // completeSection.setAttribute('id', 'complete-section');
-  // todoDetailSection.append(completeSection);
-
-  // const completeTitle = document.createElement('h3');
-  // completeTitle.setAttribute('id', 'complete-title');
-  // completeTitle.setAttribute('class', 'title complete-title');
-  // completeTitle.innerHTML = 'COMPLETED?';
-  // completeSection.append(completeTitle);
-
-  // const completeLabel = document.createElement('label');
-  // completeLabel.setAttribute('class', 'complete-label');
-  // completeSection.append(completeLabel);
-
-  // const completeCheckbox = document.createElement('input');
-  // completeCheckbox.setAttribute('id', 'complete-checkbox')
-  // completeCheckbox.type = 'checkbox';
-  // completeCheckbox.name = 'checkbox';
-  // if (todo.complete) {
-  //   completeCheckbox.checked = todo.complete;
-  //   deleteTodo(todo);
-  // }
-  // completeLabel.append(completeCheckbox);
-
-  // const completeSpan = document.createElement('span');
-  // completeSpan.innerHTML = 'YES';
-  // completeLabel.append(completeSpan);
-
-// 
-
-
+  // Completed?
   const completeSection = document.createElement('div');
   completeSection.setAttribute('id', 'complete-section');
   todoDetailSection.append(completeSection);
@@ -885,13 +883,14 @@ function deleteProject(project) {
 /*!**********************!*\
   !*** ./src/todos.js ***!
   \**********************/
-/*! exports provided: upsertTodo, getTodos, deleteTodo */
+/*! exports provided: upsertTodo, getTodos, canDeleteTodo, deleteTodo */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "upsertTodo", function() { return upsertTodo; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTodos", function() { return getTodos; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "canDeleteTodo", function() { return canDeleteTodo; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteTodo", function() { return deleteTodo; });
 function getTodos() {
   return todos;
@@ -905,14 +904,19 @@ function upsertTodo(project, todo, data) {
   }
 }
 
-function getTodoIndex(todo) {
+function getTodoIndex(project, todo) {
   return project.todos.indexOf(todo);
 }
 
-function deleteTodo(todo) {
-  project.todos.splice(getTodoIndex(todo), 1);
+function canDeleteTodo(project, todo) {
+  return getTodoIndex(project, todo) > -1;
 }
 
+function deleteTodo(project, todo) {
+  if (canDeleteTodo(project, todo)) {
+    project.todos.splice(getTodoIndex(project, todo), 1);
+  }
+}
 
 
 

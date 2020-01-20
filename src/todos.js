@@ -10,16 +10,22 @@ function upsertTodo(project, todo, data) {
   }
 }
 
-function getTodoIndex(todo) {
+function getTodoIndex(project, todo) {
   return project.todos.indexOf(todo);
 }
 
-function deleteTodo(todo) {
-  project.todos.splice(getTodoIndex(todo), 1);
+function canDeleteTodo(project, todo) {
+  return getTodoIndex(project, todo) > -1;
 }
 
+function deleteTodo(project, todo) {
+  if (canDeleteTodo(project, todo)) {
+    project.todos.splice(getTodoIndex(project, todo), 1);
+  }
+}
 export {
   upsertTodo,
   getTodos,
+  canDeleteTodo,
   deleteTodo
 }

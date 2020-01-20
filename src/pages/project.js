@@ -31,6 +31,7 @@ function projectPage(project = new Project()) {
   backAndDeleteBtnSection.setAttribute('class', 'back-and-delete-section');
   projectContainer.append(backAndDeleteBtnSection);
 
+
   // Back to home btn
   const backBtnSection = document.createElement('div');
   backBtnSection.setAttribute('class', 'back-btn-section');
@@ -61,7 +62,7 @@ function projectPage(project = new Project()) {
     });
   } else {
     deleteProjectBtn.setAttribute('disabled', true);
-  }
+  };
   deleteProjectBtnSection.append(deleteProjectBtn);
 
   // container for project items (project title and description)
@@ -167,7 +168,8 @@ function projectPage(project = new Project()) {
       todoItemDeleteBtn.setAttribute('class', 'btn delete-btn todo-item-delete-btn');
       todoItemDeleteBtn.innerHTML = 'DELETE';
       todoItemDeleteBtn.addEventListener('click', () => {
-        deleteTodo(todo);
+        deleteTodo(project, todo);
+        navigation('project', project);
       });
       
       todoItem.append(todoItemDeleteBtn)
