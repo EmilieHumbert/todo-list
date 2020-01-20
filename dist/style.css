@@ -163,7 +163,7 @@ body {
   padding: 2rem;
 }
 
-.li {
+.todo-item {
   display: grid;
   grid-template-columns: 1fr 5fr 1fr;
   background-color: #e6f1f7;
@@ -175,8 +175,20 @@ body {
   margin: 0.725rem 0;
 }
 
-.li:hover {
+.todo-item:hover {
   font-weight: bold;
+}
+
+.todo-item[data-priority="high"] {
+  border-left: 0.5rem solid #e40404;
+}
+
+.todo-item[data-priority="medium"] {
+  border-left: 0.5rem solid #f39f04;
+}
+
+.todo-item[data-priority="low"] {
+  border-left: 0.5rem solid #f1f154;
 }
 
 .todo-item-checkbox {

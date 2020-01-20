@@ -487,8 +487,8 @@ function projectPage(project = new _factories_project__WEBPACK_IMPORTED_MODULE_2
   if (Array.isArray(project.todos)) {
     project.todos.forEach((todo) => {
       const todoItem = document.createElement('li');
-      todoItem.setAttribute('class', 'li')
-
+      todoItem.setAttribute('class', 'todo-item');
+      todoItem.dataset.priority = todo.priority;
       const todoItemCheckbox = document.createElement('input');
       todoItemCheckbox.setAttribute('class', 'todo-item-checkbox');
       todoItemCheckbox.type = 'checkbox';
@@ -527,7 +527,7 @@ function projectPage(project = new _factories_project__WEBPACK_IMPORTED_MODULE_2
 
   // Add new item to todo list
   const emptyTodoItem = document.createElement('li');
-  emptyTodoItem.setAttribute('class', 'li add-new-item');
+  emptyTodoItem.setAttribute('class', 'todo-item add-new-item');
   emptyTodoItem.innerHTML = 'Add item';
   emptyTodoItem.addEventListener('click', () => Object(_navigation__WEBPACK_IMPORTED_MODULE_0__["default"])('todo', { project }));
   todoList.append(emptyTodoItem);

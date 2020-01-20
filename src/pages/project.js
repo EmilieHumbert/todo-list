@@ -141,8 +141,8 @@ function projectPage(project = new Project()) {
   if (Array.isArray(project.todos)) {
     project.todos.forEach((todo) => {
       const todoItem = document.createElement('li');
-      todoItem.setAttribute('class', 'li')
-
+      todoItem.setAttribute('class', 'todo-item');
+      todoItem.dataset.priority = todo.priority;
       const todoItemCheckbox = document.createElement('input');
       todoItemCheckbox.setAttribute('class', 'todo-item-checkbox');
       todoItemCheckbox.type = 'checkbox';
@@ -181,7 +181,7 @@ function projectPage(project = new Project()) {
 
   // Add new item to todo list
   const emptyTodoItem = document.createElement('li');
-  emptyTodoItem.setAttribute('class', 'li add-new-item');
+  emptyTodoItem.setAttribute('class', 'todo-item add-new-item');
   emptyTodoItem.innerHTML = 'Add item';
   emptyTodoItem.addEventListener('click', () => navigation('todo', { project }));
   todoList.append(emptyTodoItem);
